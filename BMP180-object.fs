@@ -16,7 +16,7 @@
 
 
 require objects.fs
-require ../BBB_Gforth_gpio/BBB_I2C_lib.fs
+require ../BBB_Gforth_gpio/CHIP_Gforth_i2c.fs
 
 object class
   protected
