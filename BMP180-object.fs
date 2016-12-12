@@ -1,5 +1,5 @@
-\ This Gforth code reads BMP180 pressure temperature sensor via i2c on BBB rev c hardware
-\    Copyright (C) 2015  Philip K. Smith
+\ This Gforth code reads BMP180 pressure temperature sensor via i2c connected at U14 pin25 and pin26 on CHIP hardware
+\    Copyright (C) 2016  Philip K. Smith
 
 \    This program is free software: you can redistribute it and/or modify
 \    it under the terms of the GNU General Public License as published by
@@ -58,16 +58,16 @@ object class
     cell% inst-var pa
 
     m: ( nindex bmp180 -- nsigned-cal ) \ retrieve signed calibration value
-	\ note this method of eeprom bytes to a number only works on 32 bit BBB
+	\ note this method of eeprom bytes to a number only works on 32 bit CHIP
 	dup 1 + eeprom-data + c@ swap eeprom-data + c@ 0x100 * + 0x10000 * 0x10000 / ;m method getsigned-calvalue
     m: ( nindex bmp180 -- nunsigned-cal ) \ retrieve unsigned calibration value
-	\ note this method of eeprom bytes to a number only works on 32 bit BBB
+	\ note this method of eeprom bytes to a number only works on 32 bit CHIP
 	dup 1 + eeprom-data + c@ swap eeprom-data + c@ 0x100 * + ;m method getunsigned-calvalue
     m:  ( bmp180 -- )
 	\ open i2c sensor channel and read eeprom
-	i2cbus BMP180ADDR bbbi2copen dup 0 = throw [to-inst] i2c-handle
-	i2c-handle CMD_READ_CALIBRATION bbbi2cwrite-b throw
-	i2c-handle eeprom-data EEprom_size bbbi2cread 0 = throw
+	i2cbus BMP180ADDR CHIPi2copen dup 0 = throw [to-inst] i2c-handle
+	i2c-handle CMD_READ_CALIBRATION CHIPi2cwrite-b throw
+	i2c-handle eeprom-data EEprom_size CHIPi2cread 0 = throw
 	\ put eeprom data in variables
 	0  this getsigned-calvalue   ac1 !
 	2  this getsigned-calvalue   ac2 !
@@ -83,22 +83,22 @@ object class
         \ read uncompensated temperature
 	0xf4 buff c!
 	0x2e buff 1 + c!
-	i2c-handle buff 2 bbbi2cwrite 0 = throw
+	i2c-handle buff 2 CHIPi2cwrite 0 = throw
 	6 ms
-	i2c-handle 0xf6 bbbi2cwrite-b throw
-	i2c-handle buff 2 bbbi2cread 0 = throw
+	i2c-handle 0xf6 CHIPi2cwrite-b throw
+	i2c-handle buff 2 CHIPi2cread 0 = throw
 	buff c@ 8 lshift buff 1 + c@ or [to-inst] ut
         \ read uncompensated pressure
 	0xf4 buff c!
 	0x34 OVERSAMPLING_ULTRA_LOW_POWER 6 lshift + buff 1 + c!
-	i2c-handle buff 2 bbbi2cwrite 0 = throw
+	i2c-handle buff 2 CHIPi2cwrite 0 = throw
 	OVERSAMPLING_ULTRA_LOW_POWER 1 + 10 * ms
-	i2c-handle 0xf6 bbbi2cwrite-b throw
-	i2c-handle buff 3 bbbi2cread 0 = throw
+	i2c-handle 0xf6 CHIPi2cwrite-b throw
+	i2c-handle buff 3 CHIPi2cread 0 = throw
 	buff c@ 16 lshift buff 1 + c@ 8 lshift or buff 2 + c@ or
 	8 OVERSAMPLING_ULTRA_LOW_POWER - rshift [to-inst] up
 	\ close i2c channel
-	i2c-handle bbbi2cclose throw
+	i2c-handle CHIPi2cclose throw
 	\ compensate temperature
 	ut ac6 @ -
 	ac5 @
