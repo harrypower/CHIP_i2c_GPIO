@@ -43,7 +43,7 @@ Continue? [Y/n] y
 50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 70: -- -- -- -- -- -- -- 77
-``
+```
 
 Notice the warning! It is real because some devices can be reset or locked when they are accessed this way!
 This example shows a device at address 0x77 and that device is in my case a BMP180 pressure temperature sensor! The UU means those addresses were skipped because linux has some devices in use at those addresses.
