@@ -7,5 +7,5 @@ C.H.I.P. i2c and GPIO low level and other code to access devices
 * BMP180-object.fs
   * This file is an object that can be used to talk to the BMP180 sensor provided it is connected to U14 pin25 and pin26 for i2c-2 connection.  I have confirmed at this writing that this does work with the above CHIP_Gforth_i2c i2c low level words.
 
-* i2c-information.md
+* [i2c-information.md](i2c-information.md)
   * Information file about CHIP and i2c!
