@@ -1,5 +1,5 @@
-\ This Gforth code gives GPIO functionality to BBB rev c hardware in Gforth
-\    Copyright (C) 2014  Philip K. Smith
+\ This Gforth code gives i2c functionality to C.H.I.P. hardware in Gforth
+\    Copyright (C) 2016  Philip K. Smith
 
 \    This program is free software: you can redistribute it and/or modify
 \    it under the terms of the GNU General Public License as published by
@@ -18,13 +18,13 @@
 \  The device tree should be set up before using this software.
 \  Note it is possible to access the GPIO stuff without setting device tree stuff but
 \  be aware that doing so may cause confusion in linux.
-\  This software works with Debian Wheezy and may work on other versions.
+\  This software works with Debian Jessie and may work on other versions.
 \  In my research for this i2c code i found this link:
 \  http://www.element14.com/community/thread/23991/l/bbb--i2c-notes
 \  This code worked well and i was going to do the same stuff so i decided to copy and adapted it here.
 \  This authors writing style is like mine and the code all worked!
 
-c-library myBBBi2c
+c-library myCHIPi2c
 \c #include <stdio.h>
 \c #include <linux/i2c.h>
 \c #include <linux/i2c-dev.h>
@@ -172,30 +172,30 @@ c-library myBBBi2c
 \c   return(length);
 \c }
 
-c-function bbbi2copen        i2c_open                        n n -- n
-c-function bbbi2cwrite       i2c_write                     n a n -- n
-c-function bbbi2cwrite-b     i2c_write_byte                  n n -- n
-c-function bbbi2cread        i2c_read                      n a n -- n
-c-function bbbi2cread-b      i2c_read_byte                   n a -- n
-c-function bbbi2cclose       i2c_close                         n -- n
-c-function bbbi2cwriteread   i2c_write_read        n n a n n a n -- n
-c-function bbbwrite-ign-nack i2c_write_ignore_nack       n n a n -- n
-c-function bbbread-no-ack    i2c_read_no_ack             n n a n -- n
+c-function CHIPi2copen        i2c_open                        n n -- n
+c-function CHIPi2cwrite       i2c_write                     n a n -- n
+c-function CHIPi2cwrite-b     i2c_write_byte                  n n -- n
+c-function CHIPi2cread        i2c_read                      n a n -- n
+c-function CHIPi2cread-b      i2c_read_byte                   n a -- n
+c-function CHIPi2cclose       i2c_close                         n -- n
+c-function CHIPi2cwriteread   i2c_write_read        n n a n n a n -- n
+c-function CHIPwrite-ign-nack i2c_write_ignore_nack       n n a n -- n
+c-function CHIPread-no-ack    i2c_read_no_ack             n n a n -- n
 
 end-c-library
 
     \ All the i2c words return a value.  Some words also get passed a pointer so data can be passed to forth also.
     \ Following is a list of what that return value means per word:
-    \ bbbi2copen        returns -1 or a file handle
-    \ bbbi2cwrite       returns -1 or a length count ( note if lenght count is 0 that means 0 bytes sent)
-    \ bbbi2cwrite-b     returns -1 or 0 this 0 is a pass condition
-    \ bbbi2cread        returns -1 or a length count ( if lenght count is 0 that means 0 bytes read)
-    \ bbbi2cread-b      returns -1 or 0 this 0 is a pass condition
-    \ bbbi2cclose       returns -1 or 0 this 0 is a pass condition
-    \ bbbi2cwriteread   returns -1 or a length count ( if length count is 0 that means 0 bytes read)
-    \ bbbwrite-ign-nack returns -1 or a length count ( if length count is 0 that means 0 bytes sent)
-    \ bbbread-no-ack    returns -1 or a length count ( if length count is 0 that means 0 bytes read)
+    \ CHIPi2copen        returns -1 or a file handle
+    \ CHIPi2cwrite       returns -1 or a length count ( note if lenght count is 0 that means 0 bytes sent)
+    \ CHIPi2cwrite-b     returns -1 or 0 this 0 is a pass condition
+    \ CHIPi2cread        returns -1 or a length count ( if lenght count is 0 that means 0 bytes read)
+    \ CHIPi2cread-b      returns -1 or 0 this 0 is a pass condition
+    \ CHIPi2cclose       returns -1 or 0 this 0 is a pass condition
+    \ CHIPi2cwriteread   returns -1 or a length count ( if length count is 0 that means 0 bytes read)
+    \ CHIPwrite-ign-nack returns -1 or a length count ( if length count is 0 that means 0 bytes sent)
+    \ CHIPread-no-ack    returns -1 or a length count ( if length count is 0 that means 0 bytes read)
     \ So the idea here is if a words returns -1 it is a clear protocal failure.  If it is a 0 lentgh count returned
     \ then you can see that in most cases that means something was not sent or recieved but it may not be
-    \ and error.  The three words bbbi2cwrite-b, bbbi2cread-b and bbbi2cclose the 0 returned always means a pass for
+    \ and error.  The three words CHIPi2cwrite-b, CHIPi2cread-b and CHIPi2cclose the 0 returned always means a pass for
     \ the function.   This should help in determining what to do based on the returned value!
