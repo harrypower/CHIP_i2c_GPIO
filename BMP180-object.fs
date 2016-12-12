@@ -28,7 +28,7 @@ object class
     1       constant OVERSAMPLING_STANDARD
     2       constant OVERSAMPLING_HIGH_RESOLUTION
     3       constant OVERSAMPLING_ULTRA_HIGH_RESOLUTION
-    1       constant i2cbus  \ note this is the linux enumerated i2c address but physically it is i2c2 not i2c1
+    2       constant i2cbus  \ note this is the linux enumerated i2c address connected at U14 pin25 and pin26
     cell% inst-var ac1  \ signed
     cell% inst-var ac2  \ signed
     cell% inst-var ac3  \ signed
