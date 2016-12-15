@@ -4,7 +4,7 @@ Notes on using i2c on CHIP:
 
 `sudo i2cdetect -l`
 
-This will show you a list of i2c devices on your BBB like the following:
+This will show you a list of i2c devices on your CHIP like the following:
 ```
 i2c-0   i2c             mv64xxx_i2c adapter                     I2C adapter
 i2c-1   i2c             mv64xxx_i2c adapter                     I2C adapter
