@@ -42,36 +42,15 @@ cr
   handle voltage-msb CHIPi2cread-b throw
   handle CHIPi2cclose ;
 
-\ : read-lsb ( -- )
-\  0 0x34 1 CHIPi2copen dup { handle } true = throw
-\  handle 0x79 voltage-lsb 1 CHIPread-no-ack 0 <= throw
-\  handle CHIPi2cclose  ;
+: read-lsb ( -- )
+  0 0x34 1 CHIPi2copen dup { handle } true = throw
+  handle 0x79 CHIPi2cwrite-b throw
+  0 0x34 1 CHIPi2copen dup { handle } true = throw
+  handle voltage-msb CHIPi2cread-b throw
+  handle CHIPi2cclose ;
 
 battery-prep
 read-msb
-\ read-lsb
-voltage-msb 4 dump cr
-\ voltage-lsb 4 dump cr
-
-\\\
-: battery-voltage-read ( -- )
-  0 0x34 1 CHIPi2copen dup { handle } true = throw
-  0xc3 mybuffer c!
-  handle 0x82 mybuffer 1 CHIPwrite-ign-nack 0 <= throw
-  handle CHIPi2cclose
-
-  0 0x34 1 CHIPi2copen dup to handle true = throw
-  handle 0x78 voltage-msb 1 CHIPread-no-ack 0 <= throw
-  handle CHIPi2cclose
-
-  0 0x34 1 CHIPi2copen dup to handle true = throw
-  handle 0x79 voltage-lsb 1 CHIPread-no-ack 0 <= throw
-  handle CHIPi2cclose  ;
-
-\\\
-battery-voltage-read
-voltage-lsb c@ . ." voltage-lsb" cr
-voltage-msb c@ . ." voltage-msb" cr
-
+read-lsb
 voltage-msb 4 dump cr
 voltage-lsb 4 dump cr
