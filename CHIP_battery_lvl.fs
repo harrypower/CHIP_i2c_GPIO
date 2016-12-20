@@ -22,6 +22,8 @@ create voltage-lsb 2 allot
 create voltage-msb 2 allot
 
 : battery-voltage-read ( -- )
+  \ look at bash code and see the write that happens first
+  \ add this write here then test
   0 0x34 CHIPi2copen dup { handle }  0 <= throw
   handle voltage-msb 0x78 CHIPi2cread-b throw
   handle voltage-lsb 0x79 CHIPi2cread-b throw
