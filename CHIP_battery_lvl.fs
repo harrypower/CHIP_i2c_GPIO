@@ -22,6 +22,8 @@ variable voltage-lsb
 variable voltage-msb
 variable buffer
 
+s" i2cset -y -f 0 0x34 0x82 0xC3" system
+
 : battery-voltage-read ( -- )
   0 0x34 CHIPi2copen dup { handle } true = throw
   buffer 0xc3 c!
