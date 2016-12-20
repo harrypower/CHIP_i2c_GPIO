@@ -24,7 +24,9 @@ create voltage-msb 2 allot
 : battery-voltage-read ( -- )
   0 0x34 CHIPi2copen dup { handle }  0 <= throw
   handle voltage-msb 0x78 CHIPi2cread-b throw
-  handle voltage-lsb 0x79 CHIPi2cread-b throw ;
+  handle voltage-lsb 0x79 CHIPi2cread-b throw
+  handle CHIPi2cclose  ;
 
+battery-voltage-read
 voltage-lsb c@ . ." voltage-lsb" cr
 voltage-msb c@ . ." voltage-msb" cr
