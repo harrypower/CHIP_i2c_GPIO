@@ -27,7 +27,27 @@ cr
 s" i2cset -y -f 0 0x34 0x82 0xC3" system
 s" i2cget -y -f 0 0x34 0x78" sh-get type
 s" i2cget -y -f 0 0x34 0x79" sh-get type
+cr
 
+: battery-prep ( -- )
+  0 0x34 CHIPi2copen dup { handle } true = throw
+  buffer 0xc3 c!
+  handle 0x82 buffer 1 CHIPwrite-ign-nack 0 <= throw
+  handle CHIPi2cclose ;
+
+: read-msb ( -- )
+  0 0x34 CHIPi2copen dup { handle } true = throw
+  handle 0x78 voltage-msb 1 CHIPread-no-ack 0 <= throw
+  handle CHIPi2cclose ;
+
+: read-lsb ( -- )
+  0 0x34 CHIPi2copen dup { handle } true = throw
+  handle 0x79 voltage-lsb 1 CHIPread-no-ack 0 <= throw
+  handle CHIPi2cclose  ;
+
+battery-prep
+read-msb
+read-lsb
 
 : battery-voltage-read ( -- )
   0 0x34 CHIPi2copen dup { handle } true = throw
@@ -43,6 +63,7 @@ s" i2cget -y -f 0 0x34 0x79" sh-get type
   handle 0x79 voltage-lsb 1 CHIPread-no-ack 0 <= throw
   handle CHIPi2cclose  ;
 
+\\\
 battery-voltage-read
 voltage-lsb c@ . ." voltage-lsb" cr
 voltage-msb c@ . ." voltage-msb" cr
