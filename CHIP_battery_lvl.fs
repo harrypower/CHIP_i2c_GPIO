@@ -38,14 +38,14 @@ cr
 : read-msb ( -- )
   0 0x34 1 CHIPi2copen dup { handle } true = throw
   handle 0x78 CHIPi2cwrite-b throw
-  0 0x34 1 CHIPi2copen dup { handle } true = throw
+  0 0x34 1 CHIPi2copen dup to handle true = throw
   handle voltage-msb CHIPi2cread-b throw
   handle CHIPi2cclose ;
 
 : read-lsb ( -- )
   0 0x34 1 CHIPi2copen dup { handle } true = throw
   handle 0x79 CHIPi2cwrite-b throw
-  0 0x34 1 CHIPi2copen dup { handle } true = throw
+  0 0x34 1 CHIPi2copen dup to handle true = throw
   handle voltage-lsb CHIPi2cread-b throw
   handle CHIPi2cclose ;
 
@@ -54,3 +54,6 @@ read-msb
 read-lsb
 voltage-msb 4 dump cr
 voltage-lsb 4 dump cr
+voltage-msb c@ 4 lshift
+voltage-lsb c@ 0x0f and or
+." Chip battery voltage is " . ." mv" cr
