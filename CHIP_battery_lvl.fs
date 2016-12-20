@@ -17,13 +17,17 @@
 \  I have used information from /usr/bin/battery.sh found on headless chip os 4.4
 
 require CHIP_Gforth_i2c.fs
+require script.fs
 
 variable voltage-lsb
 variable voltage-msb
 variable buffer
 
 s" i2cset -y -f 0 0x34 0x82 0xC3" system
+s" i2cget -y -f 0 0x34 0x78" sh-get type
+s" i2cget -y -f 0 0x34 0x79" sh-get type
 
+\\\
 : battery-voltage-read ( -- )
   0 0x34 CHIPi2copen dup { handle } true = throw
   buffer 0xc3 c!
