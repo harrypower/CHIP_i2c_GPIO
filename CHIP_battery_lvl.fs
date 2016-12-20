@@ -30,18 +30,18 @@ s" i2cget -y -f 0 0x34 0x79" sh-get type
 cr
 
 : battery-prep ( -- )
-  0 0x34 CHIPi2copen dup { handle } true = throw
+  0 0x34 1 CHIPi2copen dup { handle } true = throw
   0xc3 buffer c!
   handle 0x82 buffer 1 CHIPwrite-ign-nack 0 <= throw
   handle CHIPi2cclose ;
 
 : read-msb ( -- )
-  0 0x34 CHIPi2copen dup { handle } true = throw
+  0 0x34 1 CHIPi2copen dup { handle } true = throw
   handle 0x78 voltage-msb 1 CHIPread-no-ack 0 <= throw
   handle CHIPi2cclose ;
 
 : read-lsb ( -- )
-  0 0x34 CHIPi2copen dup { handle } true = throw
+  0 0x34 1 CHIPi2copen dup { handle } true = throw
   handle 0x79 voltage-lsb 1 CHIPread-no-ack 0 <= throw
   handle CHIPi2cclose  ;
 
@@ -50,16 +50,16 @@ read-msb
 read-lsb
 
 : battery-voltage-read ( -- )
-  0 0x34 CHIPi2copen dup { handle } true = throw
+  0 0x34 1 CHIPi2copen dup { handle } true = throw
   0xc3 buffer c!
   handle 0x82 buffer 1 CHIPwrite-ign-nack 0 <= throw
   handle CHIPi2cclose
 
-  0 0x34 CHIPi2copen dup to handle true = throw
+  0 0x34 1 CHIPi2copen dup to handle true = throw
   handle 0x78 voltage-msb 1 CHIPread-no-ack 0 <= throw
   handle CHIPi2cclose
 
-  0 0x34 CHIPi2copen dup to handle true = throw
+  0 0x34 1 CHIPi2copen dup to handle true = throw
   handle 0x79 voltage-lsb 1 CHIPread-no-ack 0 <= throw
   handle CHIPi2cclose  ;
 

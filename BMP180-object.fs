@@ -29,6 +29,7 @@ object class
     2       constant OVERSAMPLING_HIGH_RESOLUTION
     3       constant OVERSAMPLING_ULTRA_HIGH_RESOLUTION
     2       constant i2cbus  \ note this is the linux enumerated i2c address connected at U14 pin25 and pin26
+    0       constant force   \ note this can be changed to 1 if you need to get past kernel use rather then using device tree
     cell% inst-var ac1  \ signed
     cell% inst-var ac2  \ signed
     cell% inst-var ac3  \ signed

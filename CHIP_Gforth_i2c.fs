@@ -35,7 +35,12 @@ c-library myCHIPi2c
 \c #define I2C_PASS 0
 \c #define I2C_FAIL -1
 
-\c int i2c_open(unsigned char bus, unsigned char addr)
+\c int i2c_open(unsigned char bus, unsigned char addr,int force)
+\c // force is 0 or 1
+\c // 0 is no force and 1 is force
+\c // Force will force open on i2c even if the kernel is using it.
+\c // Be aware this can be a bad idea and could even harm hardware that you are trying to talk to!
+\c // At the very least it may confuse kernel!
 \c {
 \c  int file;
 \c  char filename[16];
@@ -45,7 +50,7 @@ c-library myCHIPi2c
 \c    fprintf(stderr, "i2c_open open error: %s\n", strerror(errno));
 \c    return(file);
 \c  }
-\c  if (ioctl(file,I2C_SLAVE,addr) < 0)
+\c  if (ioctl(file,force ? I2C_SLAVE_FORCE : I2C_SLAVE,addr) < 0)
 \c  {
 \c    fprintf(stderr, "i2c_open ioctl error: %s\n", strerror(errno));
 \c    return(I2C_FAIL);
@@ -172,7 +177,7 @@ c-library myCHIPi2c
 \c   return(length);
 \c }
 
-c-function CHIPi2copen        i2c_open                        n n -- n
+c-function CHIPi2copen        i2c_open                      n n n -- n
 c-function CHIPi2cwrite       i2c_write                     n a n -- n
 c-function CHIPi2cwrite-b     i2c_write_byte                  n n -- n
 c-function CHIPi2cread        i2c_read                      n a n -- n
