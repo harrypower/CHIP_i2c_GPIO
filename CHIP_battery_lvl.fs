@@ -46,7 +46,7 @@ cr
   0 0x34 1 CHIPi2copen dup { handle } true = throw
   handle 0x79 CHIPi2cwrite-b throw
   0 0x34 1 CHIPi2copen dup { handle } true = throw
-  handle voltage-msb CHIPi2cread-b throw
+  handle voltage-lsb CHIPi2cread-b throw
   handle CHIPi2cclose ;
 
 battery-prep
