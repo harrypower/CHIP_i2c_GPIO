@@ -45,7 +45,7 @@ c-library myCHIPi2c
 \c    fprintf(stderr, "i2c_open open error: %s\n", strerror(errno));
 \c    return(file);
 \c  }
-\c  if (ioctl(file,I2C_SLAVE,addr) < 0)
+\c  if (ioctl(file,I2C_SLAVE_FORCE,addr) < 0) \\ I2C_SLAVE
 \c  {
 \c    fprintf(stderr, "i2c_open ioctl error: %s\n", strerror(errno));
 \c    return(I2C_FAIL);
