@@ -31,7 +31,7 @@ cr
 
 : battery-prep ( -- )
   0 0x34 CHIPi2copen dup { handle } true = throw
-  buffer 0xc3 c!
+  0xc3 buffer c!
   handle 0x82 buffer 1 CHIPwrite-ign-nack 0 <= throw
   handle CHIPi2cclose ;
 
@@ -51,7 +51,7 @@ read-lsb
 
 : battery-voltage-read ( -- )
   0 0x34 CHIPi2copen dup { handle } true = throw
-  buffer 0xc3 c!
+  0xc3 buffer c!
   handle 0x82 buffer 1 CHIPwrite-ign-nack 0 <= throw
   handle CHIPi2cclose
 
