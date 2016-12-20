@@ -24,6 +24,7 @@ variable voltage-msb
 variable mybuffer
 
 cr
+." This is the data recieved with the bash method:"
 s" i2cset -y -f 0 0x34 0x82 0xC3" system
 s" i2cget -y -f 0 0x34 0x78" sh-get type
 s" i2cget -y -f 0 0x34 0x79" sh-get type
@@ -49,12 +50,15 @@ cr
   handle voltage-lsb CHIPi2cread-b throw
   handle CHIPi2cclose ;
 
-battery-read-prep
-read-msb
-read-lsb
+: read-battery ( -- )
+  battery-read-prep
+  read-msb
+  read-lsb
+  voltage-msb @ 4 lshift
+  voltage-lsb @ 0x0f and or s>f 1.1e f*
+  ." Chip battery voltage is " f. ." mv" cr ;
+
+read-battery
 voltage-msb 4 dump
 voltage-lsb 4 dump
-." This data should match data from the above bash data!"
-voltage-msb c@ 4 lshift
-voltage-lsb c@ 0x0f and or s>f 1.1e f*
-." Chip battery voltage is " f. ." mv" cr
+." This data should match data from the above bash data!" cr
