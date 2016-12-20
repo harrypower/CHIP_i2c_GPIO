@@ -18,17 +18,27 @@
 
 require CHIP_Gforth_i2c.fs
 
-create voltage-lsb 2 allot
-create voltage-msb 2 allot
+variable voltage-lsb
+variable voltage-msb
+variable buffer
 
 : battery-voltage-read ( -- )
-  \ look at bash code and see the write that happens first
-  \ add this write here then test
-  0 0x34 CHIPi2copen dup { handle }  0 <= throw
-  handle voltage-msb 0x78 CHIPi2cread-b throw
-  handle voltage-lsb 0x79 CHIPi2cread-b throw
+  0 0x34 CHIPi2copen dup { handle }  true = throw
+  buffer 0xc3 c!
+  handle 0x82 buffer 1 CHIPi2cwrite-ign-nack 0 <= throw
+  handle CHIPi2cclose
+
+  0 0x34 CHIPi2copen dup to handle true = throw
+  handle 0x78 voltage-msb 1 CHIPi2cread-no-ack 0 <= throw
+  handle CHIPi2cclose
+
+  0 0x34 CHIPi2copen dup to handle true = throw
+  handle 0x79 voltage-lsb 1 CHIPi2cread-no-ack 0 <= throw
   handle CHIPi2cclose  ;
 
 battery-voltage-read
 voltage-lsb c@ . ." voltage-lsb" cr
 voltage-msb c@ . ." voltage-msb" cr
+
+voltage-msb 4 dump cr
+voltage-lsb 4 dump cr
