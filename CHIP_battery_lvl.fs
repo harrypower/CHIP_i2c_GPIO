@@ -21,7 +21,7 @@ require script.fs
 
 variable voltage-lsb
 variable voltage-msb
-variable buffer
+variable mybuffer
 
 cr
 s" i2cset -y -f 0 0x34 0x82 0xC3" system
@@ -31,8 +31,8 @@ cr
 
 : battery-prep ( -- )
   0 0x34 1 CHIPi2copen dup { handle } true = throw
-  0xc3 buffer c!
-  handle 0x82 buffer 1 CHIPwrite-ign-nack 0 <= throw
+  0x82 mybuffer c! 0xc3 mybuffer 1 + c!
+  handle mybuffer 2 CHIPi2cwrite 0 <= throw
   handle CHIPi2cclose ;
 
 : read-msb ( -- )
@@ -48,11 +48,13 @@ cr
 battery-prep
 read-msb
 read-lsb
+voltage-msb 4 dump cr
+voltage-lsb 4 dump cr 
 
 : battery-voltage-read ( -- )
   0 0x34 1 CHIPi2copen dup { handle } true = throw
-  0xc3 buffer c!
-  handle 0x82 buffer 1 CHIPwrite-ign-nack 0 <= throw
+  0xc3 mybuffer c!
+  handle 0x82 mybuffer 1 CHIPwrite-ign-nack 0 <= throw
   handle CHIPi2cclose
 
   0 0x34 1 CHIPi2copen dup to handle true = throw
