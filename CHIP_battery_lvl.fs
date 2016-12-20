@@ -29,7 +29,7 @@ s" i2cget -y -f 0 0x34 0x78" sh-get type
 s" i2cget -y -f 0 0x34 0x79" sh-get type
 cr
 
-: battery-prep ( -- )
+: battery-read-prep ( -- )
   0 0x34 1 CHIPi2copen dup { handle } true = throw
   0x82 mybuffer c! 0xc3 mybuffer 1 + c!
   handle mybuffer 2 CHIPi2cwrite 0 <= throw
@@ -49,11 +49,12 @@ cr
   handle voltage-lsb CHIPi2cread-b throw
   handle CHIPi2cclose ;
 
-battery-prep
+battery-read-prep
 read-msb
 read-lsb
-voltage-msb 4 dump cr
-voltage-lsb 4 dump cr
+voltage-msb 4 dump
+voltage-lsb 4 dump
+." This data should match data from the above bash data!"
 voltage-msb c@ 4 lshift
-voltage-lsb c@ 0x0f and or
-." Chip battery voltage is " . ." mv" cr
+voltage-lsb c@ 0x0f and or s>f 1.1e f*
+." Chip battery voltage is " f. ." mv" cr
