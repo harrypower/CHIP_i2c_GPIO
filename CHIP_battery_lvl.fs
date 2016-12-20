@@ -25,15 +25,15 @@ variable buffer
 : battery-voltage-read ( -- )
   0 0x34 CHIPi2copen dup { handle }  true = throw
   buffer 0xc3 c!
-  handle 0x82 buffer 1 CHIPi2cwrite-ign-nack 0 <= throw
+  handle 0x82 buffer 1 CHIPwrite-ign-nack 0 <= throw
   handle CHIPi2cclose
 
   0 0x34 CHIPi2copen dup to handle true = throw
-  handle 0x78 voltage-msb 1 CHIPi2cread-no-ack 0 <= throw
+  handle 0x78 voltage-msb 1 CHIPread-no-ack 0 <= throw
   handle CHIPi2cclose
 
   0 0x34 CHIPi2copen dup to handle true = throw
-  handle 0x79 voltage-lsb 1 CHIPi2cread-no-ack 0 <= throw
+  handle 0x79 voltage-lsb 1 CHIPread-no-ack 0 <= throw
   handle CHIPi2cclose  ;
 
 battery-voltage-read
