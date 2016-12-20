@@ -23,12 +23,12 @@ variable voltage-lsb
 variable voltage-msb
 variable buffer
 
-cr 
+cr
 s" i2cset -y -f 0 0x34 0x82 0xC3" system
 s" i2cget -y -f 0 0x34 0x78" sh-get type
 s" i2cget -y -f 0 0x34 0x79" sh-get type
 
-\\\
+
 : battery-voltage-read ( -- )
   0 0x34 CHIPi2copen dup { handle } true = throw
   buffer 0xc3 c!
