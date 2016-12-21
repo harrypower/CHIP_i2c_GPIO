@@ -183,11 +183,10 @@ object class
 	eeprom-data EEprom_size erase
     ;m overrides construct
 
-
 end-class bmp180-i2c
 
 
 \ example use of this object
 \ bmp180-i2c heap-new constant mybmp180
 \ mybmp180 display-tp
-\ mybmp180 read-temp-pressure throw cr ." humd:" . cr ." temp:" .
+\ mybmp180 read-temp-pressure throw cr ." pressure:" . cr ." temperature:" .

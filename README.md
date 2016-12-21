@@ -19,13 +19,13 @@ C.H.I.P. i2c and GPIO low level and other code to access devices with Gforth
   ```
   bmp180-i2c heap-new constant mybmp180
   mybmp180 display-tp
-  mybmp180 read-temp-pressure throw cr ." humd:" . cr ." temp:" .
+  mybmp180 read-temp-pressure throw cr ." pressure:" . cr ." temperature:" .
   ```
 
   This example shows two ways to read the data from the object called bmp180-i2c.
 
 * CHIP_battery_lvl.fs
-  * This file talks to the AXP209 device on the CHIP board to get the battery voltage if you have on connected.  Use this example as guidance to talk to the AXP209 device for other information.  I got the idea from the file at /usr/bin/battery.sh found on headless chip os 4.4.  Note the AXP209 device seems to be on i2c bus address 0 and this bus is used by the kernel.  So to get around this i added the ability to force an i2c connection when opening the handle with the CHIP_Gforth_i2c.fs code.  This force a connection method could cause damage to i2c devices and or confuse the kernel so use this with care.
+  * This file talks to the AXP209 device on the CHIP board to get the battery voltage if you have one connected.  Use this example as guidance to talk to the AXP209 device for other information.  I got the idea from the file at /usr/bin/battery.sh found on headless chip os 4.4.  Note the AXP209 device seems to be on i2c bus address 0 and this bus is used by the kernel.  So to get around this i added the ability to force an i2c connection when opening the handle with the CHIP_Gforth_i2c.fs code.  This force a connection method could cause damage to i2c devices and or confuse the kernel so use this with care.
 
 * clean-myGforth_i2c-libs
   * This file is a simple bash script to delete the shared library files that are created when you use CHIP_Gforth_i2c.fs the first time.  Use this file to remove the shared library when an update happens on this git repository for the CHIP_Gforth_i2c.fs library.
