@@ -3,6 +3,7 @@
 Notes on using i2c on CHIP:
 
 To start this may need to be run to start using the i2c stuff that follows but i do not think i needed to do this on os 4.4 debian headless:
+
 `sudo apt-get install i2c-tools`
 
 
