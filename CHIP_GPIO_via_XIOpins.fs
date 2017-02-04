@@ -21,6 +21,11 @@ require ./CHIP_Gforth_i2c.fs
 
 variable xio_buffer
 
+\ note these low level read and write words assume the PCF8574A device is at i2c-2 port and address 0x38
+\ this is directly from the CHIP schematics and is confirmed by other code snipets i have seen.
+\ It works but if this expander is moved then this code would need to be updated for this!
+\ The data read or writen is always all 8 pins at the same time so binary mask should be used if you just want some pins!
+
 : readxio ( -- uc nflag ) \ returns uc value a byte from the PCF8574A expander 8 pins
   \ uc is valid if nflag is false.  us is not valid if nflag is true
   try
@@ -45,5 +50,5 @@ variable xio_buffer
       xiohandle CHIPi2cclose throw
     then
     false
-  restore dup if swap drop then 
+  restore dup if swap drop then
   endtry ;

@@ -30,5 +30,8 @@ C.H.I.P. i2c and GPIO low level and other code to access devices with Gforth
 * clean-myGforth_i2c-libs
   * This file is a simple bash script to delete the shared library files that are created when you use CHIP_Gforth_i2c.fs the first time.  Use this file to remove the shared library when an update happens on this git repository for the CHIP_Gforth_i2c.fs library.
 
+* CHIP_GPIO_via_XIOpins.fs
+  * The i2c device PCF8574A used on CHIP board is an gpio type expander.  There are pins labeled XIO-P0 to XIO-P7 on u14 header that connect to this gpio expander.  This code simply provides read and write type words to use those pins as GPIO 
+
 * [i2c-information.md](i2c-information.md)
   * Information file about CHIP and i2c!
