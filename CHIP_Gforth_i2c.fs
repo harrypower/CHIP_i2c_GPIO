@@ -29,6 +29,9 @@ c-library myCHIPi2c
 \c #include <linux/i2c.h>
 \c #include <linux/i2c-dev.h>
 \c #include <sys/ioctl.h>
+\c #include <sys/types.h>
+\c #include <sys/stat.h>
+\c #include <unistd.h>
 \c #include <fcntl.h>
 \c #include <errno.h>
 
