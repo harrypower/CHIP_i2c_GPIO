@@ -16,7 +16,7 @@
 
 
 require objects.fs
-require CHIP_Gforth_i2c.fs
+require ./CHIP_Gforth_i2c.fs
 
 object class
   protected

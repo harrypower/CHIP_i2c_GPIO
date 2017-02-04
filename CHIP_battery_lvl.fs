@@ -16,7 +16,7 @@
 
 \  I have used information from /usr/bin/battery.sh found on headless chip os 4.4
 
-require CHIP_Gforth_i2c.fs
+require ./CHIP_Gforth_i2c.fs
 require script.fs
 
 variable voltage-lsb
@@ -26,7 +26,7 @@ variable mybuffer
 cr
 ." This is the data recieved with the bash method:" cr
 s" i2cset -y -f 0 0x34 0x82 0xC3" system
-s" i2cget -y -f 0 0x34 0x78" sh-get type cr 
+s" i2cget -y -f 0 0x34 0x78" sh-get type cr
 s" i2cget -y -f 0 0x34 0x79" sh-get type
 cr
 
