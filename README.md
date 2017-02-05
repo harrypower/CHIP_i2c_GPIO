@@ -6,8 +6,7 @@ C.H.I.P. i2c and GPIO low level and other code to access devices with Gforth
 
   `sudo gforth CHIP_Gforth_i2c.fs`
 
-  * Note there are some warning messages generated at this moment of compiling that i will need to remove.  Some changes in the shared library method seems to have caused this.  I will deal with this when i can but for now it does work on my CHIP hardware.
-  * I added an ability to force an i2c connection to CHIPi2copen word.  Realize this could damage devices and or confuse the kernel so use with caution!
+  * I added an ability to force an i2c connection to CHIPi2copen word.  Realize this could damage devices and or confuse the kernel so use with caution!  This means the sysfs stuff that is working with i2c devices will get confused when you start forcing i2c connections but on the other hand if you simply use this and not the sysfs stuff then it does not really matter right.  After all i treat the chip as a powerfull microcontroller!
 
 * BMP180-object.fs
   * This file is an object that can be used to talk to the BMP180 sensor provided it is connected to U14 pin25 and pin26 for i2c-2 connection.  I have confirmed at this writing that this does work with the above CHIP_Gforth_i2c i2c low level words.  Use this as follows at the command line:
@@ -31,7 +30,8 @@ C.H.I.P. i2c and GPIO low level and other code to access devices with Gforth
   * This file is a simple bash script to delete the shared library files that are created when you use CHIP_Gforth_i2c.fs the first time.  Use this file to remove the shared library when an update happens on this git repository for the CHIP_Gforth_i2c.fs library.
 
 * CHIP_GPIO_via_XIOpins.fs
-  * The i2c device PCF8574A used on CHIP board is an gpio type expander.  There are pins labeled XIO-P0 to XIO-P7 on u14 header that connect to this gpio expander.  This code simply provides read and write type words to use those pins as GPIO 
+  * The i2c device PCF8574A used on CHIP board is an gpio type expander.  There are pins labeled XIO-P0 to XIO-P7 on u14 header that connect to this gpio expander.  This code simply provides read and write type words to use those pins as GPIO.  
+  The method used to talk to the GPIO expander is a force type method... This means the sysfs stuff could get confused so if using this method then do not use the sysfs stuff!
 
 * [i2c-information.md](i2c-information.md)
   * Information file about CHIP and i2c!
