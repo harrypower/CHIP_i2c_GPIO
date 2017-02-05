@@ -52,3 +52,18 @@ variable xio_buffer
     false
   restore dup if swap drop then
   endtry ;
+
+: fastwritexio ( caddr uqnt -- usent nflag ) \ write a stream of bytes to the xio expander
+  \ caddr is the address where the bytes start and uqnt is the amount of bytes to write
+  \ usent will indicate how many of the uqnt bytes sent if nflag is false
+  \ if nflag is true then usent is not valid
+  try
+    2 0x38 1 CHIPi2copen dup { xiohandle } true = if
+      true throw
+    else
+      xiohandle rot rot  CHIPi2cwrite dup true = if throw then
+      xiohandle CHIPi2cclose throw
+    then
+    false
+  restore dup if rot drop then 
+  endtry ;
