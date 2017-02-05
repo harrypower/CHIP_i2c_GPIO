@@ -71,11 +71,11 @@ variable xio_buffer
 \ \\\ example of use
 
 : thousand-slow ( -- ) \ simply put out a pulse train of 1000 1 and 0's on pin XIO-P0
-  1000 0 do 1 writexio drop 0 writexio drop drop loop ;
+  1000 0 do 1 writexio drop 0 writexio drop loop ;
 
 create write-data
 \ put data into write-data storage for pulse train
 1000 0 [do] 1 c, 0 c, [loop]
 
 : thousand-fast ( -- ) \ faster pulse train of 1000 1 and 0's on pin XIO-P0
-  write-data 1000 fastwritexio drop drop ;
+  write-data 2000 fastwritexio drop drop ;
