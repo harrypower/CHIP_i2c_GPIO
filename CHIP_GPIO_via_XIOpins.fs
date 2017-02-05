@@ -85,11 +85,11 @@ create write-data
   \ uxio-p3 data is valid if nflag is false and not valid if nflag is true
   \ nflag is true if any part of the read write open close operations failed and false if read and write worked properly.
   try
-    %1000 writexio throw 
+    %1000 writexio throw
     readxio throw
     %1000 and \ mask out only xio-p3 and copy it for output
     1 rshift \ shift xio-p3 data to xio-p2 for writing
-    dup 3 rshift \ shift uxio-p3 data to show as a 0 or 1
+    dup 2 rshift \ shift uxio-p3 data to show as a 0 or 1
     swap writexio throw \ write the xio-p3 data out to xio-p2 pin
     false
   restore dup if 0 true then \ clean up stack it this code has thrown any errors
