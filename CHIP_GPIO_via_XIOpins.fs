@@ -79,3 +79,15 @@ create write-data
 
 : thousand-fast ( -- ) \ faster pulse train of 1000 1 and 0's on pin XIO-P0
   write-data 2000 fastwritexio drop drop ;
+
+: read-write-xio-pins ( -- uxio-p3 nflag ) \ read xio-p3 and write the data to xio-p2
+  \ uxio-p3 is the value of p3 at the time of reading it in this code
+  \ uxio-p3 data is valid if nflag is false and not valid if nflag is true
+  \ nflag is true if any part of the read write open close operations failed and false if read and write worked properly.
+  try
+    readxio throw
+    %1000 and dup \ mask out only xio-p3 and copy it for output
+    writexio throw
+    false
+  restore
+  endtry ;
