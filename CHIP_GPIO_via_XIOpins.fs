@@ -26,7 +26,8 @@ variable xio_buffer
 \ It works but if this expander is moved then this code would need to be updated for this!
 \ The data read or writen is always all 8 pins at the same time so binary mask should be used if you just want some pins!
 
-: readxio ( -- uc nflag ) \ returns uc value a byte from the PCF8574A expander 8 pins
+: read-internal-xio ( -- uc nflag ) \ returns uc value byte from the PCF8574A expander internal shift register
+  \ uc is the data from the internal shift register ( write high to pin before this command to get the pin current value )
   \ uc is valid if nflag is false.  us is not valid if nflag is true
   try
     2 0x38 1 CHIPi2copen dup { xiohandle } true = if
@@ -38,6 +39,22 @@ variable xio_buffer
     false
   restore
     if 0 true else xio_buffer @ false then
+  endtry ;
+
+: readxio ( upins -- uc nflag ) \ returns uc the value byte from PCF8574a expander pins
+  \ upins is a byte sized pin mask that you want to read
+  \ uc is the returned byte from the PCF8574a expander that represents current pin values
+  \ nflag can false meaning uc value is valid or true meaning i2c failed for some reason and uc value is not valid
+  try
+    2 0x38 1 CHIPi2copen dup { xiohandle } true = if
+      true throw
+    else
+      xiohandle swap CHIPi2cwrite-b throw
+      xiohandle xio_buffer CHIPi2cread-b throw
+      xiohandle CHIPi2cclose throw
+    then
+    xio_buffer @ false
+  restore \ no clean up needed because either false with the value or true with upins on entry returned
   endtry ;
 
 : writexio ( uc -- nflag ) \ writes uc byte to the PCF8574A expander 8 pins
@@ -85,8 +102,8 @@ create write-data
   \ uxio-p3 data is valid if nflag is false and not valid if nflag is true
   \ nflag is true if any part of the read write open close operations failed and false if read and write worked properly.
   try
-    %1000 writexio throw
-    readxio throw
+    \ %1000 writexio throw
+    %1000 readxio throw
     %1000 and \ mask out only xio-p3 and copy it for output
     1 rshift \ shift xio-p3 data to xio-p2 for writing
     dup 2 rshift \ shift uxio-p3 data to show as a 0 or 1
