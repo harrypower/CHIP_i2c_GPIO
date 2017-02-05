@@ -85,7 +85,8 @@ variable xio_buffer
   restore dup if rot drop then
   endtry ;
 
-\ \\\ example of use
+\\\ example of use
+\ comment out the above line to try the following code out.
 
 : thousand-slow ( -- ) \ simply put out a pulse train of 1000 1 and 0's on pin XIO-P0
   1000 0 do 1 writexio drop 0 writexio drop loop ;
@@ -102,7 +103,6 @@ create write-data
   \ uxio-p3 data is valid if nflag is false and not valid if nflag is true
   \ nflag is true if any part of the read write open close operations failed and false if read and write worked properly.
   try
-    \ %1000 writexio throw
     %1000 readxio throw
     %1000 and \ mask out only xio-p3 and copy it for output
     1 rshift \ shift xio-p3 data to xio-p2 for writing
